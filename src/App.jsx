@@ -3,16 +3,17 @@ import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
 
 function App() {
-  const [tasks, setTasks] = useState(
-    JSON.parse(localStorage.getItem("tasks")) || []
-  );
-
-  useEffect(() => {
+  const [tasks, setTasks] = useState(() => {
     const storedTasks = localStorage.getItem("tasks");
-    if (storedTasks) {
-      setTasks(JSON.parse(storedTasks));
+    if (!storedTasks) return [];
+    try {
+      const parsed = JSON.parse(storedTasks);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      console.error("Falha ao analisar as tarefas do localStorage", e);
+      return [];
     }
-  }, []);
+  });
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));

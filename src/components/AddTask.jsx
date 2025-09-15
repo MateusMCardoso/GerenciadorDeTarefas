@@ -6,6 +6,15 @@ function AddTask({ onAddTaskClick }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  const handleAddTaskClick = () => {
+    if (!title.trim() || !description.trim()) {
+      alert("Por favor, preencha todos os campos");
+      return;
+    }
+    onAddTaskClick(title, description);
+    setTitle("");
+    setDescription("");
+  };
   return (
     <div className="space-y-4 p-6 bg-slate-900 rounded-md shadow my-6">
       <Input
@@ -21,15 +30,7 @@ function AddTask({ onAddTaskClick }) {
         onChange={(e) => setDescription(e.target.value)}
       />
       <button
-        onClick={() => {
-          if (!title.trim() || !description.trim()) {
-            return alert("Por favor, preencha todos os campos");
-          } else {
-            onAddTaskClick(title, description);
-            setTitle("");
-            setDescription("");
-          }
-        }}
+        onClick={handleAddTaskClick}
         className="cursor-pointer w-full bg-orange-700 text-white p-4 rounded-md font-bold hover:bg-orange-500 transition duration-300 ease-in-out shadow-amber-200/5 shadow-lg"
       >
         Adicionar Tarefa
